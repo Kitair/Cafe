@@ -3,6 +3,25 @@ from uuid import uuid4
 from os import path
 # Create your models here.
 
+
+class About(models.Model):
+    def get_file_name(self, filename):
+        ext = filename.strip().split('.')[-1]
+        filename = f'{uuid4()}.{ext}'
+        return path.join('images/about', filename)
+
+    title = models.CharField(unique=True, max_length=50)
+    desc = models.CharField(max_length=500, unique=True)
+    media_url = models.ImageField(upload_to=get_file_name)
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Why_us(models.Model)
+    
+
+
 class Category(models.Model):
     title = models.CharField(unique=True, max_length=50)
     is_visible = models.BooleanField(default=True)
@@ -11,11 +30,12 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.title}: {self.category_order}'
 
+
 class Dish(models.Model):
     def get_file_name(self, filename):
         ext = filename.strip().split('.')[-1]
         filename = f'{uuid4()}.{ext}'
-        return path.join('media/images/dishes', filename)
+        return path.join('images/dishes', filename)
 
     title = models.CharField(max_length=50, unique=True)
     photo = models.ImageField(upload_to=get_file_name)
