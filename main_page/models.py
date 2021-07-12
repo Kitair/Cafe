@@ -115,7 +115,7 @@ class Testimonials(models.Model):
     photo = models.ImageField(upload_to=get_file_name)
     is_visible = models.BooleanField(default=True)
     quote = models.CharField(max_length=200, unique=True)
-    
+
     def __str__(self):
         return f'{self.title}'
 
