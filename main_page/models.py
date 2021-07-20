@@ -1,6 +1,7 @@
 from django.db import models
 from uuid import uuid4
 from os import path
+from django.core.validators import RegexValidator
 # Create your models here.
 
 
@@ -73,6 +74,7 @@ class Event(models.Model):
 
 
 class Gallery(models.Model):
+
     def get_file_name(self, filename):
         ext = filename.strip().split('.')[-1]
         filename = f'{uuid4()}.{ext}'
@@ -120,3 +122,31 @@ class Testimonials(models.Model):
         return f'{self.title}'
 
 
+class Reservations(models.Model):
+    mobile_regex = RegexValidator(regex=r'^(\d{3}[- .]?){2}\d{4}$', message='Phone in format xxx xxx xxxx')
+
+    user_name = models.CharField(max_length=30)
+    user_email = models.EmailField()
+    user_phone = models.CharField(max_length=12, validators=[mobile_regex])
+    user_date = models.DateField()
+    user_time = models.TimeField()
+    number_of_person = models.PositiveIntegerField()
+    user_message = models.CharField(max_length=300)
+
+    is_processed = models.BooleanField(default=False)
+    order_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user_name} : {self.user_email} : {self.user_message[:20]}'
+
+
+class Contact(models.Model):
+    user_name = models.CharField(max_length=30)
+    user_email = models.EmailField()
+    user_subject = models.CharField(max_length=40)
+    user_message = models.CharField(max_length=500)
+
+    is_processed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user_name} : {self.user_email} : {self.user_message[:20]}'

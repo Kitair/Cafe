@@ -1,10 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <section id="reserves">
+        <div class="container">
+            <div class="col-md-10 col-md-offset-1">
+            {% for item in reserves %}
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href='{% url "update_reserve" pk=item.pk%}'>
+                            <button type="button" class="btn btn-primary btn-sm">Закрыть заявку</button>
+                        </a>
+                    </div>
+                    <div class="col-md-3">{{ item.user_name }}</div>
+                    <div class="col-md-3">{{ item.user_phone }}</div>
+                    <div class="col-md-3">{{ item.pub_date|date:'d-m-Y' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9"><p>{{ item.user_message }}</p></div>
+                </div>
+                <hr/>
+            {% endfor %}
+        </div>
+        </div>
+        <div id="navigation" class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if reserves.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ reserves.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page in reserves.paginator.page_range %}
+                            {% if page == reserves.number %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#"> {{page}}
+                                        <span class="sr-only">(current)</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{page}}">
+                                        {{page}}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if reserves.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ reserves.paginator.num_pages }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    </section>
+{% endblock %}
