@@ -18,3 +18,20 @@ class UserLoginForm(forms.Form):
             if (not user) or (not user.check_password(password)):
                 raise forms.ValidationError('Неверный пароль или логин')
         return super().clean(*args, **kwargs)
+
+
+class UserRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username',)
+
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
+
+    def clean_password2(self, *args, **kwargs):
+        data = self.cleaned_data
+        if data['password'] != data['password2']:
+            raise forms.ValidationError('Пароли не совпадают')
+
+        return data['password2']

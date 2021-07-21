@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from cafe import settings
-from account.views import login_view
+from account.views import login_view, register_view, logout_view
 
 
 urlpatterns = [
     path('login/', login_view, name='login'),
-
+    path('register/', register_view, name='register'),
+    path('logout/', logout_view, name='logout'),
     path('admin/', admin.site.urls),
     path('manager/', include('cafe_manager.urls')),
     path('', include('main_page.urls'))

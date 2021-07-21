@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Why_us, Category, Dish, About, Event, Gallery, Chefs, Testimonials
+from .models import Hero, Why_us, Category, Dish, About, Event, Gallery, Chefs, Testimonials
 from .forms import ReservationsForm, ContactForm
 
 
@@ -21,6 +21,7 @@ def main_view(request):
             form.save()
             return redirect('/')
 
+    hero = Hero.objects.filter(is_visible=True)
     categories = Category.objects.filter(is_visible=True).order_by('-category_order')
     dish = Dish.objects.filter(is_visible=True).filter(is_special=False).order_by('-dish_order')
     dishes_special = Dish.objects.filter(is_special=True)
@@ -32,7 +33,8 @@ def main_view(request):
     testimonials = Testimonials.objects.filter(is_visible=True)
     form = ReservationsForm()
     contact_form = ContactForm()
-    return render(request, 'index.html', context={'categories': categories, 'dish': dish,
+
+    return render(request, 'index.html', context={'hero': hero, 'categories': categories, 'dish': dish,
                                                   'dishes_special': dishes_special, 'about': about[0],
                                                   'why_us': why_us, 'event': event, 'gallery': gallery,
                                                   'chefs': chefs, 'testimonials': testimonials,

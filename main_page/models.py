@@ -5,6 +5,21 @@ from django.core.validators import RegexValidator
 # Create your models here.
 
 
+class Hero(models.Model):
+    def get_file_name(self, filename):
+        ext = filename.strip().split('.')[-1]
+        filename = f'{uuid4()}.{ext}'
+        return path.join('images/hero', filename)
+
+    title = models.CharField(unique=True, max_length=50)
+    desc = models.CharField(max_length=500, unique=True)
+    photo = models.ImageField(upload_to=get_file_name)
+    is_visible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class About(models.Model):
     def get_file_name(self, filename):
         ext = filename.strip().split('.')[-1]
@@ -14,6 +29,7 @@ class About(models.Model):
     title = models.CharField(unique=True, max_length=50)
     desc = models.CharField(max_length=500, unique=True)
     media_url = models.ImageField(upload_to=get_file_name)
+    is_visible = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.title}'
