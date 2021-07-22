@@ -3,7 +3,6 @@ from .models import Hero, Why_us, Category, Dish, About, Event, Gallery, Chefs, 
 from .forms import ReservationsForm, ContactForm
 
 
-
 # Create your views here.
 # from django.http import HttpResponse
 #
